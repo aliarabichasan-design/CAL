@@ -1,219 +1,97 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="ltr">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>سجل الكراتين والتكاليف</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<title>آلة حاسبة - ٠٠٠ و ٠٠٠٠٠</title>
 <style>
-  :root{
-    --paper:#f3efe6; --ink:#211d16; --kraft:#7a5230; --tape:#c8501f;
-    --line:#d9d0bd; --muted:#8a8172; --card:#fffdf8;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%}
-  body{
-    margin:0; background:var(--paper);
-    background-image:repeating-linear-gradient(135deg, rgba(122,82,48,.05) 0 2px, transparent 2px 14px);
-    color:var(--ink); font-family:'Cairo',sans-serif; min-height:100vh;
-    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-  }
-  header{ padding:28px 20px 18px; border-bottom:3px solid var(--ink); background:var(--card); }
-  .wrap{max-width:960px;margin:0 auto;}
-  h1{ margin:0 0 6px; font-size:clamp(28px,4.5vw,40px); font-weight:800; letter-spacing:.5px; }
-  h1 span{color:var(--tape);}
-  .sub{ color:var(--muted); font-size:16px; display:flex; gap:14px; flex-wrap:wrap; }
-  .search-zone{ max-width:960px; margin:22px auto 0; padding:0 20px; }
-  .search-box{
-    display:flex; align-items:center; gap:10px; background:var(--card);
-    border:2px solid var(--ink); border-radius:10px; padding:14px 18px;
-    box-shadow:4px 4px 0 var(--kraft);
-  }
-  .search-box svg{flex:none;opacity:.6;width:22px;height:22px;}
-  .search-box input{
-    border:none; outline:none; background:transparent; font-family:'Cairo',sans-serif;
-    font-size:20px; width:100%; color:var(--ink);
-  }
-  .search-box input::placeholder{color:#a89f8e;}
-  main{max-width:960px;margin:24px auto 60px;padding:0 20px;}
-  .count{font-size:15px;color:var(--muted);margin:0 0 14px;font-family:'IBM Plex Mono',monospace;}
-  .rows{display:flex;flex-direction:column;gap:12px;}
-  .row{
-    background:var(--card); border:1px solid var(--line); border-radius:10px;
-    padding:18px 20px; display:grid; gap:14px; align-items:center;
-    transition:border-color .15s;
-  }
-  .row:hover{border-color:var(--kraft);}
-  .code{
-    font-family:'IBM Plex Mono',monospace; font-weight:600; background:var(--ink);
-    color:var(--paper); padding:6px 12px; border-radius:6px; text-align:center;
-    font-size:17px; justify-self:start;
-  }
-  .field-label{display:none;font-size:13px;color:var(--muted);margin-bottom:2px;}
-  .val{font-size:19px;}
-  .val.qty{color:var(--tape);font-weight:800;font-size:22px;}
-  .divider{
-    width:2px; align-self:stretch; background:repeating-linear-gradient(
-      to bottom, var(--kraft) 0 6px, transparent 6px 12px
-    ); justify-self:center; min-height:32px;
-  }
-  @media (max-width:720px){
-    .divider{ width:100%; height:2px; min-height:0; margin:2px 0;
-      background:repeating-linear-gradient(to right, var(--kraft) 0 6px, transparent 6px 12px); }
-  }
-  mark{background:#ffe0a8;color:inherit;border-radius:3px;padding:0 3px;}
-  .empty, .loading, .err{ text-align:center; padding:44px 16px; color:var(--muted); font-size:18px; }
-  .err{color:var(--tape);}
-  footer{ text-align:center; font-size:13px; color:var(--muted); padding:18px; font-family:'IBM Plex Mono',monospace; }
-  @media (max-width:720px){
-    .row{grid-template-columns:1fr !important;gap:8px;}
-    .code{justify-self:start;}
-    .field-label{display:block;}
-  }
+:root{--bg:#f4f4f2;--card:#fff;--text:#1a1a1a;--key:#ececea;--op:#e8a33d;--opt:#fff;--zero:#2f7d6d;--zerot:#fff;--clr:#d9534f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--card:#232323;--text:#f1f1f1;--key:#333;}}
+:root[data-theme="dark"]{--bg:#161616;--card:#232323;--text:#f1f1f1;--key:#333}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;display:flex;justify-content:center;padding:16px}
+.calc{width:100%;max-width:360px;background:var(--card);border-radius:20px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.12)}
+.screen{direction:ltr;text-align:right;min-height:88px;padding:8px 6px;overflow-x:auto}
+.expr{font-size:16px;opacity:.6;min-height:22px;white-space:nowrap}
+.val{font-size:38px;font-weight:600;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;direction:ltr}
+button{font-size:22px;padding:16px 0;border:0;border-radius:14px;background:var(--key);color:var(--text);cursor:pointer}
+button:active{transform:scale(.96)}
+.op{background:var(--op);color:var(--opt)}
+.zero{background:var(--zero);color:var(--zerot);font-size:18px}
+.clr{background:var(--clr);color:#fff}
+.w2{grid-column:span 2}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>سجل <span>الكراتين</span> والتكاليف</h1>
-    <div class="sub"><span id="lastUpdate">جارٍ التحميل…</span></div>
-  </div>
-</header>
+<div class="calc">
+  <div class="screen"><div class="expr" id="expr"></div><div class="val" id="val">0</div></div>
+  <div class="grid">
+    <button class="clr" onclick="clr()">C</button>
+    <button onclick="back()">⌫</button>
+    <button class="op" onclick="op('%')">%</button>
+    <button class="op" onclick="op('÷')">÷</button>
 
-<div class="search-zone">
-  <div class="search-box">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input id="search" type="text" placeholder="ابحث بالكود، المقاس، الكمية أو النوع…" autocomplete="off">
+    <button onclick="d('7')">7</button><button onclick="d('8')">8</button><button onclick="d('9')">9</button>
+    <button class="op" onclick="op('×')">×</button>
+
+    <button onclick="d('4')">4</button><button onclick="d('5')">5</button><button onclick="d('6')">6</button>
+    <button class="op" onclick="op('-')">−</button>
+
+    <button onclick="d('1')">1</button><button onclick="d('2')">2</button><button onclick="d('3')">3</button>
+    <button class="op" onclick="op('+')">+</button>
+
+    <button onclick="d('0')">0</button>
+    <button class="zero" onclick="d('000')">000</button>
+    <button class="zero" onclick="d('00000')">00000</button>
+    <button onclick="d('.')">.</button>
+
+    <button class="op w2" style="grid-column:span 4" onclick="eq()">=</button>
   </div>
 </div>
-
-<main>
-  <p class="count" id="count"></p>
-  <div class="rows" id="rows"><div class="loading">جارٍ جلب البيانات من الشيت…</div></div>
-</main>
-
-<footer>يتحدّث تلقائيًا من Google Sheets كل ٣٠ ثانية</footer>
-
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTJQBm-Syhly2MwKYgVSZAI3c_uHQRs4FSyZJv8-oKEf87Adm4f6HdRLf5XUz5b51_0beVms8Mbo-gp/pub?output=csv";
-
-let allRows = [];
-let headers = [];
-
-function parseCSV(text){
-  const rows = [];
-  let row = [], field = "", inQuotes = false;
-  for(let i=0;i<text.length;i++){
-    const c = text[i], n = text[i+1];
-    if(inQuotes){
-      if(c === '"' && n === '"'){ field += '"'; i++; }
-      else if(c === '"'){ inQuotes = false; }
-      else field += c;
-    } else {
-      if(c === '"') inQuotes = true;
-      else if(c === ','){ row.push(field); field = ""; }
-      else if(c === '\n' || c === '\r'){
-        if(field.length || row.length){ row.push(field); rows.push(row); row = []; field = ""; }
-        if(c === '\r' && n === '\n') i++;
-      } else field += c;
-    }
-  }
-  if(field.length || row.length){ row.push(field); rows.push(row); }
-  return rows.filter(r => r.some(v => v.trim() !== ""));
+let cur="0",prev=null,oper=null,fresh=false;
+const $=id=>document.getElementById(id);
+function fmt(s){
+  if(s==="Error")return s;
+  let [i,f]=s.split(".");
+  let neg=i.startsWith("-");if(neg)i=i.slice(1);
+  i=i.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return (neg?"-":"")+i+(f!==undefined?"."+f:"");
 }
-
-function uniqueLabels(raw){
-  const seen = {};
-  return raw.map(h=>{
-    const base = (h||"").trim() || "—";
-    seen[base] = (seen[base]||0) + 1;
-    return seen[base] > 1 ? `${base} (${seen[base]})` : base;
-  });
+function show(){
+  $("val").textContent=fmt(cur);
+  $("expr").textContent=prev!==null?fmt(prev)+" "+oper:"";
 }
-
-function hl(v, q){
-  if(!q) return v;
-  const idx = v.toLowerCase().indexOf(q.toLowerCase());
-  if(idx === -1) return v;
-  return v.slice(0,idx) + '<mark>' + v.slice(idx, idx+q.length) + '</mark>' + v.slice(idx+q.length);
+function d(x){
+  if(fresh){cur="0";fresh=false}
+  if(x==="."){if(cur.includes("."))return;cur+=".";}
+  else if(cur==="0")cur=(x==="0"||x==="000"||x==="00000")?"0":x;
+  else cur+=x;
+  show();
 }
-
-function render(list){
-  const box = document.getElementById('rows');
-  const count = document.getElementById('count');
-  count.textContent = list.length + " سطر" + (list.length === 1 ? "" : "ات");
-  if(!list.length){
-    box.innerHTML = '<div class="empty">لا توجد نتائج مطابقة</div>';
-    return;
-  }
-  const q = document.getElementById('search').value.trim();
-
-  let lastQabaghIdx = -1, firstQaedaIdx = -1;
-  headers.forEach((h, i)=>{
-    if(h.includes('قبغ')) lastQabaghIdx = i;
-    if(h.includes('قاعدة') && firstQaedaIdx === -1) firstQaedaIdx = i;
-  });
-
-  box.innerHTML = list.map(r => {
-    // نبني فقط الحقول اللي فعلاً فيها قيمة (غير الكود، اللي دايم يظهر)
-    const parts = [];
-    let dividerInserted = false;
-    headers.slice(1).forEach((h, i)=>{
-      const colIdx = i + 1;
-      const v = (r[colIdx] || '').trim();
-      if(!v) return; // تجاهل أي عمود فاضي (زي القبغ أو القاعدة إذا ما انعبّت)
-      if(!dividerInserted && colIdx === firstQaedaIdx && lastQabaghIdx !== -1 && firstQaedaIdx > lastQabaghIdx){
-        parts.push('<span class="divider"></span>');
-        dividerInserted = true;
-      }
-      const isQty = h.includes('عدد');
-      parts.push(`<span><span class="field-label">${h}</span><span class="val${isQty?' qty':''}">${hl(v, q)}</span></span>`);
-    });
-    const colCount = parts.length || 1;
-    return `
-    <div class="row" style="grid-template-columns:110px repeat(${colCount}, 1fr)">
-      <span class="code">${hl(r[0]||'', q)}</span>
-      ${parts.join('')}
-    </div>`;
-  }).join('');
+function calc(a,b,o){
+  a=parseFloat(a);b=parseFloat(b);
+  let r;
+  if(o==="+")r=a+b;else if(o==="-")r=a-b;else if(o==="×")r=a*b;
+  else if(o==="÷"){if(b===0)return "Error";r=a/b;}
+  else if(o==="%")r=a*b/100;
+  return String(parseFloat(r.toPrecision(12)));
 }
-
-function applyFilter(){
-  const q = document.getElementById('search').value.trim().toLowerCase();
-  if(!q){ render(allRows); return; }
-  render(allRows.filter(r => r.some(v => (v||'').toLowerCase().includes(q))));
+function op(o){
+  if(prev!==null&&!fresh){cur=calc(prev,cur,oper);}
+  prev=cur;oper=o;fresh=true;show();
 }
-
-async function fetchCSVText(){
-  try{
-    const res = await fetch(CSV_URL, {cache:"no-store"});
-    if(res.ok) return await res.text();
-  } catch(e){ /* fall through */ }
-  const proxied = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(CSV_URL), {cache:"no-store"});
-  if(!proxied.ok) throw new Error("تعذر الوصول للشيت");
-  return await proxied.text();
+function eq(){
+  if(prev===null)return;
+  cur=calc(prev,cur,oper);prev=null;oper=null;fresh=true;show();
 }
-
-async function load(){
-  try{
-    const text = await fetchCSVText();
-    const parsed = parseCSV(text);
-    if(!parsed.length){ allRows = []; headers = []; render([]); return; }
-    headers = uniqueLabels(parsed[0]);
-    allRows = parsed.slice(1);
-    document.getElementById('lastUpdate').textContent =
-      "آخر تحديث: " + new Date().toLocaleString('ar-EG', {dateStyle:'medium', timeStyle:'short'});
-    applyFilter();
-  } catch(e){
-    document.getElementById('rows').innerHTML = '<div class="err">تعذر تحميل البيانات. تأكد من نشر الشيت (File → Share → Publish to web) وإعادة المحاولة.</div>';
-    document.getElementById('lastUpdate').textContent = "فشل التحديث";
-  }
+function clr(){cur="0";prev=null;oper=null;fresh=false;show()}
+function back(){
+  if(fresh||cur==="Error"){cur="0"}else{cur=cur.length>1?cur.slice(0,-1):"0"}
+  if(cur==="-")cur="0";show();
 }
-
-document.getElementById('search').addEventListener('input', applyFilter);
-load();
-setInterval(load, 30000);
+show();
 </script>
 </body>
 </html>
