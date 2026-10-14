@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>آلة حاسبة - ٠٠٠ و ٠٠٠٠٠</title>
+<title>آلة حاسبة - ٠٠٠ و ٠٠٠٠٠٠</title>
 <style>
 :root{--bg:#f4f4f2;--card:#fff;--text:#1a1a1a;--key:#ececea;--op:#e8a33d;--opt:#fff;--zero:#2f7d6d;--zerot:#fff;--clr:#d9534f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--card:#232323;--text:#f1f1f1;--key:#333;}}
@@ -43,7 +43,7 @@ button:active{transform:scale(.96)}
 
     <button onclick="d('0')">0</button>
     <button class="zero" onclick="d('000')">000</button>
-    <button class="zero" onclick="d('00000')">00000</button>
+    <button class="zero" onclick="d('000000')">000000</button>
     <button onclick="d('.')">.</button>
 
     <button class="op w2" style="grid-column:span 4" onclick="eq()">=</button>
@@ -66,7 +66,7 @@ function show(){
 function d(x){
   if(fresh){cur="0";fresh=false}
   if(x==="."){if(cur.includes("."))return;cur+=".";}
-  else if(cur==="0")cur=(x==="0"||x==="000"||x==="00000")?"0":x;
+  else if(cur==="0")cur=(x==="0"||x==="000"||x==="000000")?"0":x;
   else cur+=x;
   show();
 }
